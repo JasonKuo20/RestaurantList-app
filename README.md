@@ -6,6 +6,10 @@
 
 點擊地圖圖示可以引導至 Google MAP 查看位址資訊
 
+新增 Mongoose db 的存取
+
+新增使用者可以自行新增、修改、刪除餐廳的資訊
+
 ### 環境建置與需求
 
 ---
@@ -14,6 +18,8 @@
 - Express: v4.17.1
 - Express-Handlebars: v5.1.0
 - Nodemon: v2.0.4
+- body-parser: v1.19.0
+- mongoose": v5.10.8
 
 ### 安裝
 
@@ -28,13 +34,16 @@
 3. 安裝 npm 套件
 <pre><code>npm install</code></pre>
 
-4. 安裝 nodemon 套件，並啟動伺服器，執行程式
+4. 匯入 Seed data
+<pre><code>npm run seed</code></pre>
+
+5. 安裝 nodemon 套件，並啟動伺服器，執行程式
 <pre><code>npm run dev</code></pre>
 
-5. 當 Terminal 出現以下字樣，表示伺服器已連結成功
+6. 當 Terminal 出現以下字樣，表示伺服器已連結成功
 <pre><code>The server is listening on http://localhost:3000</code></pre>
 
-6. 訪問 website
+7. 訪問 website
 <pre><code>http://localhost:3000</code></pre>
 
 ### 使用工具
