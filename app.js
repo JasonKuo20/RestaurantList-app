@@ -5,7 +5,7 @@ const port = 3000;
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose"); // 載入 mongoose
 // sources form restaurant.json (no db data)
-const restaurantList = require("./models/seeds/restaurant.json");
+// const restaurantList = require("./models/seeds/restaurant.json");
 // sources from db
 const RestaurantListDB = require("./models/restaurant")
 
@@ -42,12 +42,6 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 // routes setting
-// app.get("/", (req, res) => {
-//   res.render("index", {
-//     restaurants: restaurantList.results,
-//   });
-// });
-
 app.get('/', (req, res) => {
   RestaurantListDB.find()
     .lean()
@@ -55,11 +49,22 @@ app.get('/', (req, res) => {
       restaurants: restaurants
     }))
     .catch(error => {
-      console.log('Error from mongoose-index')
+      console.log(error)
     })
 })
 
+//新增restaurant
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new')
+})
 
+app.post('/restaurants', (req, res) => {
+  return RestaurantListDB.create(req.body)
+    .then(() => res.redirect('/'))
+    .catch(error => {
+      console.log('Error from mongoose-create')
+    })
+})
 
 // open restaurant detail page
 app.get("/restaurants/:restaurants_id", (req, res) => {
@@ -74,19 +79,28 @@ app.get("/restaurants/:restaurants_id", (req, res) => {
 });
 
 // Search Restaurant
-// app.get("/search", (req, res) => {
-//   const keyword = req.query.keyword;
-//   const restaurants = restaurantList.results.filter((restaurant) => {
-//     return (
-//       restaurant.name.toLowerCase().includes(keyword.toLowerCase()) ||
-//       restaurant.category.toLowerCase().includes(keyword.toLowerCase())
-//     );
-//   });
-//   res.render("index", {
-//     restaurants: restaurants,
-//     keyword: keyword,
-//   });
-// });
+app.get("/search", (req, res) => {
+  const keyword = req.query.keyword.trim()
+  return RestaurantListDB.find()
+    .lean()
+    .then((restaurants) => {
+      const searchRestaurants = restaurants.filter((restaurant) => restaurant.name.toLowerCase().includes(keyword) || restaurant.name_en.toLowerCase().includes(keyword))
+      if (searchRestaurants.length === 0) {
+        res.render('fail', {
+          keyword
+        })
+      } else {
+        res.render('index', {
+          restaurants: searchRestaurants,
+          keyword
+        })
+      }
+    })
+    .catch(error => {
+      console.log('Error from mongoose-search')
+    })
+});
+
 
 // start and listen on the Express server
 app.listen(port, () => {
