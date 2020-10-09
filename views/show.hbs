@@ -1,11 +1,24 @@
 <h1 class="mb-1 restaurant-show-title">{{restaurant.name}}</h1>
+
 <div class="container">
   <div class="row">
+    <div class="col-12 col-md-10 mx-auto">
+      <a href="/restaurants/new"><button type="button" class="btn btn-info">新增餐廳</button></a>
+      <a href="/"><button type="button" class="btn btn-info">顯示全部</button></a>
+      {{#if id}}
+      <a href="/restaurants/{{restaurant._id}}/edit"><button type="button" class="btn btn-warning">修改</button></a>
+      <form action="/restaurants/{{restaurant._id}}/delete" method="post" style="display: inline"
+        onsubmit="return confirm('確定要刪除此筆資料嗎？')">
+        <button type="submit" class="btn btn-danger">刪除</button>
+      </form>
+      {{/if}}
+    </div>
+
     <div class="col-12 col-md-10 mx-auto">
 
       <p class="mb-1">
         <span class="text-secondary">
-          <i class="fas fa-utensils pr-2"></i>
+          <i class="fas fa-utensils pr-2 fa-2x"></i>
           類別：
         </span>
         {{restaurant.category}}
@@ -13,18 +26,18 @@
 
       <p class="mb-1">
         <span class="text-secondary">
-          <i class="fas fa-map-marker-alt pr-2"></i>
+          <i class="fas fa-map-marker-alt pr-2 fa-2x"></i>
           地址：
         </span>
         {{restaurant.location}}
         <a href="{{restaurant.google_map}}" class="text-secondary" target="_blank">
-          <i class="fas fa-location-arrow pr-2 fa-xs"></i>
+          <i class="fas fa-location-arrow pr-2 fa-2x"></i>
         </a>
       </p>
 
       <p class="mb-1">
         <span class="text-secondary">
-          <i class="fas fa-mobile-alt pr-2"></i>
+          <i class="fas fa-mobile-alt pr-2 fa-2x"></i>
           電話：
         </span>
         {{restaurant.phone}}
