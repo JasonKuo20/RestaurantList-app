@@ -101,6 +101,47 @@ app.get("/search", (req, res) => {
     })
 });
 
+// 修改餐廳
+app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+
+  return RestaurantListDB.findById(id)
+    .lean()
+    .then((restaurant) => res.render('edit', {
+      restaurant
+    }))
+    .catch(error => {
+      console.log('Error from mongoose Edit' + error)
+    })
+})
+
+app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+
+  return RestaurantListDB.findById(id)
+    .then((restaurant) => {
+      restaurant = Object.assign(restaurant, req.body)
+      return restaurant.save()
+    })
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch(error => {
+      console.log('Error from mongoose Edit Save' + error)
+    })
+})
+
+// 刪除餐廳
+app.post('/restaurants/:restaurant_id/delete', (req, res) => {
+  const id = req.params.restaurant_id
+
+  return RestaurantListDB.findById(id)
+    .then((restaurant) => {
+      restaurant.remove()
+    })
+    .then(() => res.redirect('/'))
+    .catch(error => {
+      console.log('Error from mongoose delete' + error)
+    })
+})
 
 // start and listen on the Express server
 app.listen(port, () => {
