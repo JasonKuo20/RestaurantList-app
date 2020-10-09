@@ -145,5 +145,5 @@ app.post('/restaurants/:restaurant_id/delete', (req, res) => {
 
 // start and listen on the Express server
 app.listen(port, () => {
-  console.log(`Express is listening on localhost:${port}`);
+  console.log(`The server is listening on http://localhost:${port}`);
 });
